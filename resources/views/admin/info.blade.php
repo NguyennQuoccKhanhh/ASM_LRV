@@ -65,6 +65,10 @@
                                                         <th class="ps-0" scope="row">Password :</th>
                                                         <td class="text-muted">{{ Auth::user()->password }}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <th class="ps-0" scope="row">Ngày đăng ký :</th>
+                                                        <td class="text-muted">{{ Auth::user()->created_at }}</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>

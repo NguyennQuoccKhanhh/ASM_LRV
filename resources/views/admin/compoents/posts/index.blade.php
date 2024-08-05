@@ -5,104 +5,113 @@
 @endsection
 
 @section('content')
-    <!-- start page title -->
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Danh sách bài viết</h4>
+    @if ($data->isEmpty())
+        <div class="alert alert-info">
+            Không có bài viết nào để hiển thị.
+        </div>
+    @else
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Danh sách bài viết</h4>
 
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
-                        <li class="breadcrumb-item active">Hiển thị</li>
-                    </ol>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Danh sách</a></li>
+                            <li class="breadcrumb-item active">Hiển thị</li>
+                        </ol>
+                    </div>
+
                 </div>
-
             </div>
         </div>
-    </div>
-    <!-- end page title -->
+        <!-- end page title -->
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header justify-content-between d-flex align-items-center">
-                    <h5 class="card-title mb-0">Danh sách</h5>
-                    <a href="{{ route('admin.compoents.posts.create') }}" class="btn btn-primary">Thêm mới</a>
-                </div>
-                <div class="card-body">
-                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-                        style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên người đăng</th>
-                                <th>Danh mục bài viết</th>
-                                <th>Tiêu đề bài viết</th>
-                                <th>Đường dẫn</th>
-                                <th>Mã bài viết</th>
-                                <th>Ảnh bìa</th>
-                                <th>Miêu tả ngắn</th>
-                                <th>Mô tả</th>
-                                <th>Lượt xem</th>
-                                <th>Hiển thị</th>
-                                <th>Thời gian đăng bài</th>
-                                <th>Thời gian khởi tạo</th>
-                                <th>Thời gian cập nhật</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data as $item)
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header justify-content-between d-flex align-items-center">
+                        <h5 class="card-title mb-0">Danh sách</h5>
+                        <a href="{{ route('admin.compoents.posts.create') }}" class="btn btn-primary">Thêm mới</a>
+                    </div>
+                    <div class="card-body">
+                        <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                            style="width:100%">
+                            <thead>
                                 <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->user->name }}</td>
-                                    <td>{{ $item->catelogue->name }}</td>
-                                    <td>{{ $item->title }}</td>
-                                    <td>{{ $item->slug }}</td>
-                                    <td>{{ $item->sku }}</td>
-                                    <td>
-                                        @php
-                                            $url = $item->image_post;
-
-                                            if (!\Str::contains($url, 'http')) {
-                                                $url = Storage::url($url);
-                                            }
-
-                                        @endphp
-                                        <img src="{{ $url }}" width="100px" alt="">
-
-
-
-                                    </td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>{{ $item->content }}</td>
-                                    <td>{{ $item->view }}</td>
-                                    <td>{!! $item->is_show_home
-                                        ? '<span class="badge bg-success">Có</span>'
-                                        : '<span class="badge bg-danger">Không</span>' !!}</td>
-                                    <td>{{ $item->published_at }}</td>
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->updated_at }}</td>
-                                    <td class="d-flex">
-                                        <a href="{{ route('admin.compoents.posts.show', $item) }}" class="btn btn-primary">Xem</a>
-                                        <a href="{{ route('admin.compoents.posts.edit', $item) }}" class="btn btn-warning">Sửa</a>
-                                        <form action="{{ route('admin.compoents.posts.destroy', $item) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button onclick="return confirm('Chắc chắn chứ???')" type="submit"
-                                                class="btn btn-danger">
-                                                Ẩn </button>
-                                        </form>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Tên người đăng</th>
+                                    <th>Danh mục bài viết</th>
+                                    <th>Tiêu đề bài viết</th>
+                                    <th>Đường dẫn</th>
+                                    <th>Mã bài viết</th>
+                                    <th>Ảnh bìa</th>
+                                    <th>Miêu tả ngắn</th>
+                                    <th>Mô tả</th>
+                                    <th>Lượt xem</th>
+                                    <th>Hiển thị</th>
+                                    <th>Thời gian đăng bài</th>
+                                    <th>Thời gian khởi tạo</th>
+                                    <th>Thời gian cập nhật</th>
+                                    <th>Thao tác</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($data as $item)
+                                    <tr>
+                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $item->user->name }}</td>
+                                        <td>{{ $item->catelogue->name }}</td>
+                                        <td>{{ $item->title }}</td>
+                                        <td>{{ $item->slug }}</td>
+                                        <td>{{ $item->sku }}</td>
+                                        <td>
+                                            @php
+                                                $url = $item->image_post;
+
+                                                if (!\Str::contains($url, 'http')) {
+                                                    $url = Storage::url($url);
+                                                }
+
+                                            @endphp
+                                            <img src="{{ $url }}" width="100px" alt="">
+
+
+
+                                        </td>
+                                        <td>{{ $item->description }}</td>
+                                        <td>{{ $item->content }}</td>
+                                        <td>{{ $item->view }}</td>
+                                        <td>{!! $item->is_show_home
+                                            ? '<span class="badge bg-success">Có</span>'
+                                            : '<span class="badge bg-danger">Không</span>' !!}</td>
+                                        <td>{{ $item->published_at }}</td>
+                                        <td>{{ $item->created_at }}</td>
+                                        <td>{{ $item->updated_at }}</td>
+                                        <td class="d-flex">
+                                            {{-- <a href="{{ route('admin.compoents.posts.show', $item) }}" --}}
+                                                {{-- class="btn btn-primary">Xem</a> --}}
+                                            <a href="{{ route('admin.compoents.posts.edit', $item->slug) }}"
+                                                class="btn btn-warning">Sửa</a>
+                                            <form action="{{ route('admin.compoents.posts.destroy', $item->slug) }}"
+                                                method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button onclick="return confirm('Chắc chắn chứ???')" type="submit"
+                                                    class="btn btn-danger">
+                                                    Ẩn </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </div><!--end col-->
-    </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    @endif
 @endsection
 
 @section('styles-list')

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('admin.compoents.posts.update', $post) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.compoents.posts.update', $post->slug) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">

@@ -1,16 +1,16 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Danh sách tất cả bài viết
+    Danh sách bài viết
 @endsection
 
 @section('content')
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Danh sách bài viết</h1>
+        <h1 class="text-center text-white display-6">Danh sách bài viết theo danh mục: {{ $currentCatelogue->name }}</h1>
         <ol class="breadcrumb justify-content-center mb-0">
             <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-            <li class="breadcrumb-item active text-white">Danh sách bài viết </li>
+            <li class="breadcrumb-item active text-white">Danh sách bài viết theo danh mục </li>
         </ol>
     </div>
     <!-- Single Page Header End -->
@@ -31,18 +31,6 @@
                             </div>
                         </div>
                         <div class="col-6"></div>
-                        {{-- <div class="col-xl-3">
-                            <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                <label for="fruits">Bộ lọc:</label>
-                                <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
-                                    form="fruitform">
-                                    <option value="volvo">Danh mục 1</option>
-                                    <option value="saab">Danh mục 2</option>
-                                    <option value="opel">Danh mục 3</option>
-                                    <option value="audi">Danh mục 4</option>
-                                </select>
-                            </div>
-                        </div> --}}
                     </div>
                     <div class="row g-4">
                         <div class="col-lg-3">
@@ -60,7 +48,7 @@
                                                     class="img-fluid w-100 rounded-top" alt="">
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                                style="top: 10px; left: 10px;">{{ $post->catelogue->name }}</div>
+                                                style="top: 10px; left: 10px;">{{ $currentCatelogue->name }}</div>
                                             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                 <h4>{{ $post->title }}</h4>
                                                 <p>{{ Str::limit($post->description, 100) }} </p>
@@ -84,7 +72,8 @@
                                         @endif
 
                                         @foreach ($posts->getUrlRange(1, $posts->lastPage()) as $page => $url)
-                                            <a href="{{ $url }}" class="rounded {{ $page == $posts->currentPage() ? 'active' : '' }}">{{ $page }}</a>
+                                            <a href="{{ $url }}"
+                                                class="rounded {{ $page == $posts->currentPage() ? 'active' : '' }}">{{ $page }}</a>
                                         @endforeach
 
                                         @if ($posts->hasMorePages())

@@ -19,7 +19,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data = Post::query()->latest('id')->get();
+        $data = Post::whereHas('catelogue', function ($query) {
+            $query->whereNull('deleted_at');
+        })->latest('id')->get();
         return view(self::PATH_VIEW . __FUNCTION__, compact('data'));
     }
 
@@ -101,23 +103,24 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit( $slug)
     {
+        $post = Post::where('slug', $slug)->firstOrFail();
         $post->load('media');
         $catelogues = Catelogue::query()->pluck('name', 'id')->all();
-        return view(self::PATH_VIEW . __FUNCTION__, compact('post','catelogues'));
+        return view(self::PATH_VIEW . __FUNCTION__, compact('post', 'catelogues'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, $slug)
     {
-        $data = $request->except('image_post', 'image_media','sku');
+        $post = Post::where('slug', $slug)->firstOrFail();
+        $data = $request->except('image_post', 'image_media', 'sku');
         $data['is_show_home'] = isset($data['is_show_home']) ? 1 : 0;
 
         if ($request->hasFile('image_post')) {
-            // Xóa ảnh cũ nếu có
             if ($post->image_post && Storage::exists($post->image_post)) {
                 Storage::delete($post->image_post);
             }
@@ -155,8 +158,9 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(string $slug)
     {
+        $post = Post::where('slug', $slug)->firstOrFail();
         $post->delete();
         return redirect()->route('admin.compoents.posts.index');
     }
@@ -174,4 +178,5 @@ class PostController extends Controller
 
         return redirect()->route('admin.compoents.posts.index');
     }
+
 }

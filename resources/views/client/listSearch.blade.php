@@ -1,13 +1,13 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Danh sách tất cả bài viết
+    Danh sách tất cả bài viết tìm kiếm
 @endsection
 
 @section('content')
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Danh sách bài viết</h1>
+        <h1 class="text-center text-white display-6">Danh sách tất cả bài viết tìm kiếm</h1>
         <ol class="breadcrumb justify-content-center mb-0">
             <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
             <li class="breadcrumb-item active text-white">Danh sách bài viết </li>
@@ -17,6 +17,7 @@
 
 
     <!-- Fruits Shop Start-->
+
     <div class="container-fluid fruite py-5">
         <div class="container py-5">
             <h1 class="mb-4">Tìm kiếm bài viết</h1>
@@ -52,29 +53,40 @@
                         </div>
                         <div class="col-lg-9">
                             <div class="row g-4 justify-content-center">
-                                @foreach ($posts as $post)
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img">
-                                                <img src="{{ Storage::url($post->image_post) }}"
-                                                    class="img-fluid w-100 rounded-top" alt="">
-                                            </div>
-                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                                style="top: 10px; left: 10px;">{{ $post->catelogue->name }}</div>
-                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                <h4>{{ $post->title }}</h4>
-                                                <p>{{ Str::limit($post->description, 100) }} </p>
-                                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                                    <a href="{{ route('chitiet', $post->slug) }}"
-                                                        class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                            class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết
-                                                        bài
-                                                        viết</a>
+                                @if ($posts->isEmpty())
+                                    <div class="col-12">
+                                        <div class="alert alert-warning text-center" role="alert">
+                                            Không tìm thấy kết quả nào cho từ khóa của bạn.
+                                        </div>
+                                    </div>
+                                @else
+                                    @foreach ($posts as $post)
+                                        <div class="col-md-6 col-lg-6 col-xl-4">
+                                            <div class="rounded position-relative fruite-item">
+                                                <div class="fruite-img">
+                                                    <img src="{{ Storage::url($post->image_post) }}"
+                                                        class="img-fluid w-100 rounded-top" alt="">
+                                                </div>
+                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                                    style="top: 10px; left: 10px;">
+                                                    {{ $post->category ? $post->category->name : 'Không có danh mục' }}
+                                                </div>
+                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                    <h4>{{ $post->title }}</h4>
+                                                    <p>{{ Str::limit($post->description, 100) }}</p>
+                                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                                        <a href="{{ route('chitiet', $post->slug) }}"
+                                                            class="btn border border-secondary rounded-pill px-3 text-primary">
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết
+                                                            bài viết
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                @endif
+
                                 <div class="col-12">
                                     <div class="pagination d-flex justify-content-center mt-5">
                                         @if ($posts->onFirstPage())
@@ -84,7 +96,8 @@
                                         @endif
 
                                         @foreach ($posts->getUrlRange(1, $posts->lastPage()) as $page => $url)
-                                            <a href="{{ $url }}" class="rounded {{ $page == $posts->currentPage() ? 'active' : '' }}">{{ $page }}</a>
+                                            <a href="{{ $url }}"
+                                                class="rounded {{ $page == $posts->currentPage() ? 'active' : '' }}">{{ $page }}</a>
                                         @endforeach
 
                                         @if ($posts->hasMorePages())
@@ -100,6 +113,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- Fruits Shop End-->
 @endsection

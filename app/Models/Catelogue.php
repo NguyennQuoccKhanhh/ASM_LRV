@@ -33,4 +33,5 @@ class Catelogue extends Model
             get: fn (string $value) => Carbon::parse($value)->format('d/m/Y H:i:s'),
         );
     }
+
 }

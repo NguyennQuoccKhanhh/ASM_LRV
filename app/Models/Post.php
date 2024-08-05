@@ -62,4 +62,8 @@ class Post extends Model
             get: fn(string $value) => Carbon::parse($value)->format('d/m/Y H:i:s'),
         );
     }
+    public function scopeSearchByTitle($query, $title)
+    {
+        return $query->where('title', 'LIKE', "%{$title}%");
+    }
 }

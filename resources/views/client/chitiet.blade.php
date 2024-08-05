@@ -1,7 +1,7 @@
 @extends('client.layouts.master')
 
 @section('title')
-    Chi tiết bài viết
+    Chi tiết bài viết : {{ $post->slug }}
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
     <div class="container-fluid page-header py-5">
         <h1 class="text-center text-white display-6">Chi tiết sản phẩm</h1>
         <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
             <li class="breadcrumb-item active text-white">Chi tiết sản phẩm</li>
         </ol>
     </div>
@@ -25,14 +25,14 @@
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
-                                    <img src="{{ asset('themes/client/img/single-item.jpg') }}" class="img-fluid rounded"
+                                    <img src="{{ Storage::url($post->image_post) }}" class="img-fluid rounded"
                                         alt="Image">
                                 </a>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <h4 class="fw-bold mb-3">Tiêu đề</h4>
-                            <p class="mb-3">Category: Danh mục</p>
+                            <h4 class="fw-bold mb-3">{{ $post->title }}</h4>
+                            <p class="mb-3">Category: {{ $post->catelogue->name }}</p>
                             <div class="d-flex mb-4">
                                 <i class="fa fa-star text-secondary"></i>
                                 <i class="fa fa-star text-secondary"></i>
@@ -40,24 +40,7 @@
                                 <i class="fa fa-star text-secondary"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <p class="mb-4">Miêu tả đầy đủ</p>
-                            {{-- <div class="input-group quantity mb-5" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0"
-                                    value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> --}}
+                            <p class="mb-4">{!! $post->content !!}</p>
                         </div>
                         <div class="col-lg-12">
                             <nav>
@@ -72,71 +55,60 @@
                             </nav>
                             <div class="tab-content mb-5">
                                 <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                    <p>Nôi dung</p>
+                                    <p>{!! $post->content !!}</p>
 
                                 </div>
                                 <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
-                                    <div class="d-flex">
-                                        <img src="{{ asset('themes/client/img/avatar.jpg') }}"
-                                            class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;"
-                                            alt="">
-                                        <div class="">
-                                            <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                            <div class="d-flex justify-content-between">
-                                                <h5>Tên user</h5>
-                                                <div class="d-flex mb-3">
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star text-secondary"></i>
-                                                    <i class="fa fa-star"></i>
+                                    @foreach ($post->comments as $comment)
+                                        <div class="d-flex">
+                                            <img src="{{ Storage::url(Auth::user()->avatar) }}"
+                                                class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;"
+                                                alt="">
+                                            <div class="">
+                                                <p class="mb-2" style="font-size: 14px;">
+                                                    {{ $comment->created_at->format('d/m/Y H:i') }}</p>
+                                                <div class="d-flex justify-content-between">
+                                                    <h5>{{ $comment->user->name }}</h5>
                                                 </div>
+                                                <p>{{ $comment->content }}</p>
                                             </div>
-                                            <p>Nội dung </p>
                                         </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                        <form action="#">
+                        <div class="">
                             <h4 class="mb-5 fw-bold">Bình luận của tôi</h4>
                             <div class="row g-4">
                                 <div class="col-lg-6">
                                     <div class="border-bottom rounded">
                                         <input type="text" class="form-control border-0 me-4" disabled
-                                            placeholder="Tên user lấy từ db">
+                                            value="{{ Auth::user()->name }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="border-bottom rounded">
                                         <input type="email" class="form-control border-0" disabled
-                                            placeholder="Email lấy từ db">
+                                            value="{{ Auth::user()->email }}">
                                     </div>
                                 </div>
-                                <div class="col-lg-12">
-                                    <div class="border-bottom rounded my-4">
-                                        <textarea name="" id="" class="form-control border-0" cols="30" rows="8"
-                                            placeholder="Nội dung của bạn... *" spellcheck="false"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="d-flex justify-content-between py-3 mb-5">
-                                        <div class="d-flex align-items-center">
-                                            <p class="mb-0 me-3">Đánh giá :</p>
-                                            <div class="d-flex align-items-center" style="font-size: 12px;">
-                                                <i class="fa fa-star text-muted"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
+
+                                <form action="{{ route('comment.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                    <div class="col-lg-12">
+                                        <div class="border-bottom rounded my-4">
+                                            <textarea name="content" class="form-control border-0" cols="30" rows="8" placeholder="Nội dung của bạn... *"
+                                                spellcheck="false"></textarea>
                                         </div>
-                                        <a href="#"
-                                            class="btn border border-secondary text-primary rounded-pill px-4 py-3">Gửi</a>
+                                        <button type="submit"
+                                            class="btn border border-secondarpy text-rimary rounded-pill px-4 py-3">Gửi</button>
                                     </div>
-                                </div>
+                                </form>
+
                             </div>
-                        </form>
+                        </div>
+
                     </div>
                 </div>
                 <div class="col-lg-4 col-xl-3">
@@ -153,146 +125,33 @@
                     </div>
                 </div>
             </div>
-            <h1 class="fw-bold mb-0">Sản phẩm tương tự</h1>
+            <h1 class="fw-bold mb-0">Bài viết tương tự</h1>
             <div class="vesitable">
-                <div class="owl-carousel vegetable-carousel justify-content-center">
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('themes/client/img/vegetable-item-6.jpg') }}"
-                                class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Danh mục</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>Tiêu đề</h4>
-                            <p>Miêu tả ngắn</p>
-                            <div class="d-flex justify-content-center flex-lg-wrap">
-                                <a href="#"
-                                    class="btn border border-secondaryounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
+                @if ($relatedPosts->isNotEmpty())
+                    <div class="owl-carousel vegetable-carousel justify-content-center">
+                        @foreach ($relatedPosts as $relatedPost)
+                            <div class="border border-primary rounded position-relative vesitable-item">
+                                <div class="vesitable-img">
+                                    <img src="{{ Storage::url($relatedPost->image_post) }}"
+                                        class="img-fluid w-100 rounded-top" alt="">
+                                </div>
+                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                                    style="top: 10px; right: 10px;">{{ $relatedPost->catelogue->name }}</div>
+                                <div class="p-4 pb-0 rounded-bottom">
+                                    <h4>{{ $relatedPost->title }}</h4>
+                                    <p>{{ Str::limit($relatedPost->description, 100) }}</p>
+                                    <div class="d-flex justify-content-center flex-lg-wrap">
+                                        <a href="{{ route('chitiet', $relatedPost->slug) }}"
+                                            class="btn border border-secondaryounded-pill px-3 py-1 mb-4 text-primary"><i
+                                                class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('themes/client/img/vegetable-item-1.jpg') }}"
-                                class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Danh mục</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>Tiêu đề</h4>
-                            <p>Miêu tả ngắn</p>
-                            <div class="d-flex justify-content-center flex-lg-wrap">
-                                <a href="#"
-                                    class="btn border border-secondaryounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('themes/client/img/vegetable-item-3.png') }}"
-                                class="img-fluid w-100 rounded-top bg-light" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Danh mục</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>Tiêu đề</h4>
-                            <p>Miêu tả ngắn</p>
-                            <div class="d-flex justify-content-center flex-lg-wrap">
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('themes/client/img/vegetable-item-4.jpg') }}"
-                                class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Danh mục</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>Tiêu đề</h4>
-                            <p>Miêu tả ngắn</p>
-                            <div class="d-flex justify-content-center flex-lg-wrap">
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('themes/client/img/vegetable-item-5.jpg') }}"
-                                class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Danh mục</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>Tiêu đề</h4>
-                            <p>Miêu tả ngắn</p>
-                            <div class="d-flex justify-content-center flex-lg-wrap">
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('themes/client/img/vegetable-item-6.jpg') }}"
-                                class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Danh mục</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>Tiêu đề</h4>
-                            <p>Miêu tả ngắn</p>
-                            <div class="d-flex justify-content-center flex-lg-wrap">
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('themes/client/img/vegetable-item-5.jpg') }}"
-                                class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Danh mục</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>Tiêu đề</h4>
-                            <p>Miêu tả ngắn</p>
-                            <div class="d-flex justify-content-center flex-lg-wrap">
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border border-primary rounded position-relative vesitable-item">
-                        <div class="vesitable-img">
-                            <img src="{{ asset('themes/client/img/vegetable-item-6.jpg') }}"
-                                class="img-fluid w-100 rounded-top" alt="">
-                        </div>
-                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">Danh mục</div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>Tiêu đề</h4>
-                            <p>Miêu tả ngắn</p>
-                            <div class="d-flex justify-content-center flex-lg-wrap">
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i>Xem chi tiết bài viết</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @else
+                    <p>Không có bài viết tương tự.</p>
+                @endif
             </div>
         </div>
     </div>

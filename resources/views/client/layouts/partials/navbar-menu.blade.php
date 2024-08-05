@@ -9,16 +9,21 @@
         <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
             <div class="navbar-nav mx-auto">
                 <a href="{{ route('index') }}" class="nav-item nav-link active">Trang chủ</a>
-                <a href="{{ route('listdanhsach') }}" class="nav-item nav-link"> Tổng hợp bài viết</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Chuyên mục bài viết
-                    </a>
-                    <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                        <a href="cart.html" class="dropdown-item">Category 1</a>
-                        <a href="chackout.html" class="dropdown-item">Category 2</a>
-                        <a href="testimonial.html" class="dropdown-item">Category 3</a>
+                @if (Auth::user())
+                    <a href="{{ route('listdanhsach') }}" class="nav-item nav-link"> Tổng hợp bài viết</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Chuyên mục bài viết
+                        </a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                            @foreach ($catelogue as $cate)
+                                <a href="{{ route('listPostCate', ['id' => $cate->id]) }}"
+                                    class="dropdown-item">{{ $cate->name }}</a>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+                @endif
+
+
                 <a href="{{ route('lienhe') }}" class="nav-item nav-link">Liên hệ </a>
             </div>
             <div class="d-flex m-3 me-0">
@@ -34,8 +39,8 @@
                         </a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
                             @if (Auth::user())
-                                <a href="" class="dropdown-item">Cập nhật tài khoản</a>
-                                <a href="" class="dropdown-item">Quên mật khẩu</a>
+                                {{-- <a href="" class="dropdown-item">Cập nhật tài khoản</a> --}}
+                                <a href="{{ route('forgotPassword') }}" class="dropdown-item">Quên mật khẩu</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="post">
                                     @csrf
                                     <button type="submit" class="dropdown-item"

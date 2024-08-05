@@ -82,6 +82,43 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarComments" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarComments">
+                        <i class="ri-layout-4-line"></i> <span data-key="t-layouts">Bình luận</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarComments">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.compoents.comments.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.compoents.comments.trash_can') }}" class="nav-link"
+                                    data-key="t-horizontal">Thùng rác</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarUsers" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarUsers">
+                        <i class="ri-layout-5-line"></i> <span data-key="t-layouts">Người dùng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarUsers">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.compoents.users.index') }}" class="nav-link"
+                                    data-key="t-horizontal">Danh sách</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.compoents.users.trash_can') }}" class="nav-link"
+                                    data-key="t-horizontal">Thùng rác</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->

@@ -32,10 +32,17 @@ class CatelogueController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
+
     {
+        // $validatedData = $request->validate([
+        //     'name' => 'required|string|max:255',
+        // ]);
+
+        // dd($validatedData);
+        // Catelogue::create($validatedData);
         Catelogue::query()->create($request->all());
 
-        return redirect()->route('admin.compoents.catelogues.index')->with('success', 'Catelogue created successfully.');
+        return redirect()->route('admin.compoents.catelogues.index');
     }
 
     /**
@@ -74,6 +81,7 @@ class CatelogueController extends Controller
     public function destroy(string $id)
     {
         $catelogue = Catelogue::findOrFail($id);
+
         $catelogue->delete();
         return back();
     }
